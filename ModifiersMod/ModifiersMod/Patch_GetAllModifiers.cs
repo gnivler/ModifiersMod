@@ -10,8 +10,6 @@ namespace ModifiersMod
 
         static bool Prefix()
         {
-            float morale
-
             return false;
         }
 
@@ -39,7 +37,7 @@ namespace ModifiersMod
             float refireModifier = __instance.GetRefireModifier(weapon);
             float targetDirectFireModifier = __instance.GetTargetDirectFireModifier(target, flag);
             float indirectModifier = __instance.GetIndirectModifier(attacker, flag);
-            float moraleAttackModifier = __instance.GetMoraleAttackModifier(attacker, isCalledShot);
+            float moraleAttackModifier = __instance.GetMoraleAttackModifier(target, isCalledShot);
             float num = rangeModifier + coverModifier + selfSpeedModifier + selfSprintedModifier + selfArmMountedModifier + stoodUpModifier + heightModifier + heatModifier + targetTerrainModifier + selfTerrainModifier + targetSpeedModifier + selfDamageModifier + targetSizeModifier + targetShutdownModifier + targetProneModifier + weaponAccuracyModifier + attackerAccuracyModifier + enemyEffectModifier + refireModifier + targetDirectFireModifier + indirectModifier + moraleAttackModifier;
 
             var foo = Traverse.Create(__instance).Property("combat").GetValue<CombatGameState>();
