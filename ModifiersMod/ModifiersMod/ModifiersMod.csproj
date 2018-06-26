@@ -29,6 +29,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
       <HintPath>..\..\..\..\Reference Assemblies\0Harmony.dll</HintPath>
@@ -56,6 +59,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Logger.cs" />
     <Compile Include="ModifiersMod.cs" />
     <Compile Include="Patch_CalledShotBonusModifierProperty.cs" />
     <Compile Include="Patch_GetAllModifiers.cs" />
@@ -65,4 +69,8 @@
     <None Include="mod.json" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>md N:\SteamLibrary\steamapps\common\BATTLETECH\Mods\ModifiersMod
+copy /y $(TargetDir)$(TargetFileName) N:\SteamLibrary\steamapps\common\BATTLETECH\Mods\ModifiersMod</PostBuildEvent>
+  </PropertyGroup>
 </Project>

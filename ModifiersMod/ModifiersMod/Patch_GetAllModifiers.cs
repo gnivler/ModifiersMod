@@ -6,7 +6,7 @@ using System;
 
 namespace ModifiersMod
 {
-    /*
+    
     [HarmonyPatch(typeof(ToHit), "GetAllModifiers")]
     public static class Patch_GetAllModifiers
     {
@@ -16,8 +16,10 @@ namespace ModifiersMod
             return false;
         }
 
-        static void Postfix(ToHit __instance, AbstractActor attacker, Weapon weapon, ICombatant target, Vector3 attackPosition, Vector3 targetPosition, LineOfFireLevel lofLevel, bool isCalledShot)
+        static void Postfix(ToHit __instance, AbstractActor attacker, Weapon weapon, ICombatant target, Vector3 attackPosition, Vector3 targetPosition, LineOfFireLevel lofLevel, bool isCalledShot, float __result)
         {
+            Logger.LogLine("In Postfix with " + __result);
+
             bool flag = lofLevel < LineOfFireLevel.LOFObstructed && weapon.IndirectFireCapable;
             float rangeModifier = __instance.GetRangeModifier(weapon, attackPosition, targetPosition);
             float coverModifier = __instance.GetCoverModifier(attacker, target, lofLevel);
@@ -49,6 +51,7 @@ namespace ModifiersMod
             {
                 num = 0f;
             }
+            __result = num;
         }
-    }*/
+    }
 }

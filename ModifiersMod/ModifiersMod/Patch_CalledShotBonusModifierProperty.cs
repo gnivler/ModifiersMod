@@ -3,6 +3,7 @@ using Harmony;
 
 namespace ModifiersMod
 {
+    /*
     [HarmonyPatch(typeof(ToHit))]
     [HarmonyPatch("CalledShotBonusMultiplier", PropertyMethod.Getter)]
     class Patch_CalledShotBonusModifierProperty
@@ -11,7 +12,8 @@ namespace ModifiersMod
         {
             // ChangeAmount here would be a percentage of increase or decrease to the game-calculated float
             //
+            Logger.LogLine("In Postfix with " + __result);
             __result *= ModifiersMod.settings.ChangeAmount;
         }
-    }
+    }*/
 }
