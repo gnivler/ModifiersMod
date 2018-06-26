@@ -1,0 +1,11 @@
+﻿{
+    "Name": "ModifiersMod",
+    "Version": "0.0.1",
+    "Enabled": true,
+
+    "DLL": "ModifiersMod.dll",
+
+    "Settings": {
+        "ChangeAmount": "1f"
+    }
+}

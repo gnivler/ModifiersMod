@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ModifiersMod.cs" />
+    <Compile Include="Patch_CalledShotBonusModifierProperty.cs" />
     <Compile Include="Patch_GetAllModifiers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
