@@ -1,25 +1,26 @@
 ﻿using BattleTech;
 using Harmony;
 using UnityEngine;
-using Newtonsoft.Json;
-using System;
 
 namespace ModifiersMod
 {
-    
+    /*
     [HarmonyPatch(typeof(ToHit), "GetAllModifiers")]
     public static class Patch_GetAllModifiers
     {
-        
         static bool Prefix()
         {
+            // works
+            //Logger.LogLine("In Prefix");
             return false;
         }
 
-        static void Postfix(ToHit __instance, AbstractActor attacker, Weapon weapon, ICombatant target, Vector3 attackPosition, Vector3 targetPosition, LineOfFireLevel lofLevel, bool isCalledShot, float __result)
+        static void Postfix(ToHit __instance, AbstractActor attacker, Weapon weapon, ICombatant target, Vector3 attackPosition, Vector3 targetPosition, LineOfFireLevel lofLevel, bool isCalledShot, ref float __result)
         {
-            Logger.LogLine("In Postfix with " + __result);
 
+            // works, __result is 0 to start
+            //Logger.LogLine("In Postfix with " + __result);
+            #region copied code
             bool flag = lofLevel < LineOfFireLevel.LOFObstructed && weapon.IndirectFireCapable;
             float rangeModifier = __instance.GetRangeModifier(weapon, attackPosition, targetPosition);
             float coverModifier = __instance.GetCoverModifier(attacker, target, lofLevel);
@@ -43,15 +44,27 @@ namespace ModifiersMod
             float targetDirectFireModifier = __instance.GetTargetDirectFireModifier(target, flag);
             float indirectModifier = __instance.GetIndirectModifier(attacker, flag);
             float moraleAttackModifier = __instance.GetMoraleAttackModifier(target, isCalledShot);
-            moraleAttackModifier += ModifiersMod.settings.ChangeAmount;
-            float num = rangeModifier + coverModifier + selfSpeedModifier + selfSprintedModifier + selfArmMountedModifier + stoodUpModifier + heightModifier + heatModifier + targetTerrainModifier + selfTerrainModifier + targetSpeedModifier + selfDamageModifier + targetSizeModifier + targetShutdownModifier + targetProneModifier + weaponAccuracyModifier + attackerAccuracyModifier + enemyEffectModifier + refireModifier + targetDirectFireModifier + indirectModifier + moraleAttackModifier;
-          
+            #endregion
+            // created new float and change summing of modifierNumber
+            float modifiedAttackModifier = moraleAttackModifier * ModifiersMod.settings.ChangeAmount;
+            float modifierNumber = rangeModifier + coverModifier + selfSpeedModifier + selfSprintedModifier + selfArmMountedModifier + stoodUpModifier + heightModifier +
+                        heatModifier + targetTerrainModifier + selfTerrainModifier + targetSpeedModifier + selfDamageModifier + targetSizeModifier + targetShutdownModifier +
+                        targetProneModifier + weaponAccuracyModifier + attackerAccuracyModifier + enemyEffectModifier + refireModifier + targetDirectFireModifier + indirectModifier +
+                        modifiedAttackModifier;
+
             CombatGameState combat = Traverse.Create(__instance).Property("combat").GetValue<CombatGameState>();
-            if (num < 0f && !combat.Constants.ResolutionConstants.AllowTotalNegativeModifier)
+            if (modifierNumber < 0f && !combat.Constants.ResolutionConstants.AllowTotalNegativeModifier)
             {
-                num = 0f;
+                modifierNumber = 0f;
+                Logger.LogLine($"modifierNumber was <0");
             }
-            __result = num;
+            __result = modifierNumber;
+            Logger.LogLine($"moraleAttackModifier {moraleAttackModifier}, ChangeAmount {ModifiersMod.settings.ChangeAmount}, modifiedAttackModifier {modifiedAttackModifier}");
+            Logger.LogLine($"Calculation is {rangeModifier} + {coverModifier} + {selfSpeedModifier} + {selfSprintedModifier} + {selfArmMountedModifier} + " +
+                $" {stoodUpModifier} + {heightModifier} + { heatModifier} + { targetTerrainModifier} + { selfTerrainModifier } +" +
+                $" { targetSpeedModifier } + { selfDamageModifier} + { targetSizeModifier} + { targetShutdownModifier} + { targetProneModifier} +" +
+                $" { weaponAccuracyModifier } + { attackerAccuracyModifier} + { enemyEffectModifier} + { refireModifier } + { targetDirectFireModifier} + { indirectModifier } +" +
+                $" { modifiedAttackModifier} = {__result}");
         }
-    }
+    }*/
 }

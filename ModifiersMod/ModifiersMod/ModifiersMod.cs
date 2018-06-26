@@ -5,7 +5,6 @@ using System.Reflection;
 
 namespace ModifiersMod
 {
-
     public class Settings
     {
         public float ChangeAmount = 0f;
@@ -22,13 +21,13 @@ namespace ModifiersMod
             ModDirectory = modDirectory;
             try
             {
-                // deserialize settings json onto our settings object
                 settings = JsonConvert.DeserializeObject<Settings>(settingsJson);
+                //Logger.LogLine($"Deserialized {settings}");
             }
             catch (Exception)
             {
-                // use default settings
                 settings = new Settings();
+                //Logger.LogError(e);
             }
         }
     }

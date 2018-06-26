@@ -3,7 +3,7 @@ using Harmony;
 
 namespace ModifiersMod
 {
-    /*
+    
     [HarmonyPatch(typeof(ToHit))]
     [HarmonyPatch("CalledShotBonusMultiplier", PropertyMethod.Getter)]
     class Patch_CalledShotBonusModifierProperty
@@ -15,5 +15,5 @@ namespace ModifiersMod
             Logger.LogLine("In Postfix with " + __result);
             __result *= ModifiersMod.settings.ChangeAmount;
         }
-    }*/
+    }
 }

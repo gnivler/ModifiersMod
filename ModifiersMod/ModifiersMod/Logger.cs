@@ -17,7 +17,7 @@ namespace ModifiersMod
             }
         }
 
-        public static void LogLine(String line)
+        public static void LogLine(object line)
         {
             using (StreamWriter writer = new StreamWriter(filePath, true))
             {
