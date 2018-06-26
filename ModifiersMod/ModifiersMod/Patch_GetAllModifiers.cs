@@ -6,7 +6,7 @@ using System;
 
 namespace ModifiersMod
 {
-    
+    /*
     [HarmonyPatch(typeof(ToHit), "GetAllModifiers")]
     public static class Patch_GetAllModifiers
     {
@@ -50,5 +50,5 @@ namespace ModifiersMod
                 num = 0f;
             }
         }
-    }
+    }*/
 }

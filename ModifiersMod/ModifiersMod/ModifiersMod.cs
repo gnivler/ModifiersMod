@@ -29,8 +29,6 @@ namespace ModifiersMod
                 // use default settings
                 settings = new Settings();
             }
-
-            //...
         }
     }
 } 
