@@ -7,7 +7,8 @@ namespace ModifiersMod
 {
     public class Settings
     {
-        public float ChangeAmount = 0f;
+        // ChangeAmount is a factor and negative values equate to better shot chance
+        public float ChangeAmount;
     }
 
     public static class ModifiersMod

@@ -4,22 +4,16 @@ using UnityEngine;
 
 namespace ModifiersMod
 {
-    /*
     [HarmonyPatch(typeof(ToHit), "GetAllModifiers")]
     public static class Patch_GetAllModifiers
     {
         static bool Prefix()
         {
-            // works
-            //Logger.LogLine("In Prefix");
             return false;
         }
 
         static void Postfix(ToHit __instance, AbstractActor attacker, Weapon weapon, ICombatant target, Vector3 attackPosition, Vector3 targetPosition, LineOfFireLevel lofLevel, bool isCalledShot, ref float __result)
         {
-
-            // works, __result is 0 to start
-            //Logger.LogLine("In Postfix with " + __result);
             #region copied code
             bool flag = lofLevel < LineOfFireLevel.LOFObstructed && weapon.IndirectFireCapable;
             float rangeModifier = __instance.GetRangeModifier(weapon, attackPosition, targetPosition);
@@ -43,28 +37,27 @@ namespace ModifiersMod
             float refireModifier = __instance.GetRefireModifier(weapon);
             float targetDirectFireModifier = __instance.GetTargetDirectFireModifier(target, flag);
             float indirectModifier = __instance.GetIndirectModifier(attacker, flag);
-            float moraleAttackModifier = __instance.GetMoraleAttackModifier(target, isCalledShot);
             #endregion
-            // created new float and change summing of modifierNumber
-            float modifiedAttackModifier = moraleAttackModifier * ModifiersMod.settings.ChangeAmount;
+
+            float moraleAttackModifier = __instance.GetMoraleAttackModifier(attacker, isCalledShot);
             float modifierNumber = rangeModifier + coverModifier + selfSpeedModifier + selfSprintedModifier + selfArmMountedModifier + stoodUpModifier + heightModifier +
                         heatModifier + targetTerrainModifier + selfTerrainModifier + targetSpeedModifier + selfDamageModifier + targetSizeModifier + targetShutdownModifier +
                         targetProneModifier + weaponAccuracyModifier + attackerAccuracyModifier + enemyEffectModifier + refireModifier + targetDirectFireModifier + indirectModifier +
-                        modifiedAttackModifier;
+                        moraleAttackModifier;
 
             CombatGameState combat = Traverse.Create(__instance).Property("combat").GetValue<CombatGameState>();
             if (modifierNumber < 0f && !combat.Constants.ResolutionConstants.AllowTotalNegativeModifier)
             {
                 modifierNumber = 0f;
-                Logger.LogLine($"modifierNumber was <0");
+                Logger.LogLine($"modifierNumber was < 0");
             }
             __result = modifierNumber;
-            Logger.LogLine($"moraleAttackModifier {moraleAttackModifier}, ChangeAmount {ModifiersMod.settings.ChangeAmount}, modifiedAttackModifier {modifiedAttackModifier}");
+            Logger.LogLine($"moraleAttackModifier {moraleAttackModifier}, ChangeAmount {ModifiersMod.settings.ChangeAmount}");
             Logger.LogLine($"Calculation is {rangeModifier} + {coverModifier} + {selfSpeedModifier} + {selfSprintedModifier} + {selfArmMountedModifier} + " +
                 $" {stoodUpModifier} + {heightModifier} + { heatModifier} + { targetTerrainModifier} + { selfTerrainModifier } +" +
                 $" { targetSpeedModifier } + { selfDamageModifier} + { targetSizeModifier} + { targetShutdownModifier} + { targetProneModifier} +" +
                 $" { weaponAccuracyModifier } + { attackerAccuracyModifier} + { enemyEffectModifier} + { refireModifier } + { targetDirectFireModifier} + { indirectModifier } +" +
-                $" { modifiedAttackModifier} = {__result}");
+                $" { moraleAttackModifier} = {__result}");
         }
-    }*/
+    }
 }
