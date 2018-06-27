@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using HBS;
 
 namespace ModifiersMod
 {
@@ -15,11 +16,15 @@ namespace ModifiersMod
         {
             var HUD = Traverse.Create(__instance).Field("HUD").GetValue<CombatHUD>();
             bool flag = HUD.SelectionHandler.ActiveState.SelectionType == SelectionType.FireMorale;
-           
-            var modifier = Traverse.Create(__instance).Field("modifier").GetValue<int>();
-            var toHitCombatState = new ToHit(new CombatGameState());
-            toHitCombatState.GetMoraleAttackModifier(target, flag);
-            this.AddToolTipDetail(this.Combat.Constants.CombatUIConstants.MoraleAttackDescription.Name, this.modifier);
+            
+            var combatState = new CombatGameState();
+            var toHit = new ToHit(combatState);
+            
+            float modifier = toHit.GetMoraleAttackModifier(target, flag);
+
+            //this.AddToolTipDetail(this.Combat.Constants.CombatUIConstants.MoraleAttackDescription.Name, this.modifier);
+
+            __instance.AddToolTipDetail(__instance.Combat.Constants.CombatUIConstants.MoraleAttackDescription.Name, this.modifier);
         }
     }
 }
