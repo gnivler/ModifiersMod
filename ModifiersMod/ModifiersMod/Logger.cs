@@ -21,7 +21,7 @@ namespace ModifiersMod
         {
             using (StreamWriter writer = new StreamWriter(filePath, true))
             {
-                writer.WriteLine($"{DateTime.Now.ToShortTimeString()} -- {line}");
+                writer.WriteLine($"{DateTime.Now.ToShortTimeString()} {line}");
             }
         }
     }
