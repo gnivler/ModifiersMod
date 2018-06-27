@@ -20,11 +20,12 @@ namespace ModifiersMod
             var combatState = new CombatGameState();
             var toHit = new ToHit(combatState);
             
+            // calling the vanilla method which is already patched here?!
             float modifier = toHit.GetMoraleAttackModifier(target, flag);
 
             //this.AddToolTipDetail(this.Combat.Constants.CombatUIConstants.MoraleAttackDescription.Name, this.modifier);
 
-            __instance.AddToolTipDetail(__instance.Combat.Constants.CombatUIConstants.MoraleAttackDescription.Name, this.modifier);
+            __instance.AddToolTipDetail(__instance.Combat.Constants.CombatUIConstants.MoraleAttackDescription.Name, modifier);
         }
     }
 }
