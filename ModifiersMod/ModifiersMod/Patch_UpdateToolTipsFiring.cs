@@ -17,8 +17,8 @@ namespace ModifiersMod
             bool flag = HUD.SelectionHandler.ActiveState.SelectionType == SelectionType.FireMorale;
            
             var modifier = Traverse.Create(__instance).Field("modifier").GetValue<int>();
-
-            modifier = GetMoraleAttackModifier(__instance, target, flag);
+            var toHitCombatState = new ToHit(new CombatGameState());
+            toHitCombatState.GetMoraleAttackModifier(target, flag);
             this.AddToolTipDetail(this.Combat.Constants.CombatUIConstants.MoraleAttackDescription.Name, this.modifier);
         }
     }
