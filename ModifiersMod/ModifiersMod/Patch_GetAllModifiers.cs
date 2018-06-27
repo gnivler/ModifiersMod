@@ -4,6 +4,8 @@ using UnityEngine;
 
 namespace ModifiersMod
 {
+
+    #region deprecated
     [HarmonyPatch(typeof(ToHit), "GetAllModifiers")]
     public static class Patch_GetAllModifiers
     {
@@ -38,26 +40,29 @@ namespace ModifiersMod
             float targetDirectFireModifier = __instance.GetTargetDirectFireModifier(target, flag);
             float indirectModifier = __instance.GetIndirectModifier(attacker, flag);
             #endregion
-
             float moraleAttackModifier = __instance.GetMoraleAttackModifier(attacker, isCalledShot);
-            float modifierNumber = rangeModifier + coverModifier + selfSpeedModifier + selfSprintedModifier + selfArmMountedModifier + stoodUpModifier + heightModifier +
+
+            float totalModifier = rangeModifier + coverModifier + selfSpeedModifier + selfSprintedModifier + selfArmMountedModifier + stoodUpModifier + heightModifier +
                         heatModifier + targetTerrainModifier + selfTerrainModifier + targetSpeedModifier + selfDamageModifier + targetSizeModifier + targetShutdownModifier +
                         targetProneModifier + weaponAccuracyModifier + attackerAccuracyModifier + enemyEffectModifier + refireModifier + targetDirectFireModifier + indirectModifier +
                         moraleAttackModifier;
 
             CombatGameState combat = Traverse.Create(__instance).Property("combat").GetValue<CombatGameState>();
-            if (modifierNumber < 0f && !combat.Constants.ResolutionConstants.AllowTotalNegativeModifier)
+            if (totalModifier < 0f && !combat.Constants.ResolutionConstants.AllowTotalNegativeModifier)
             {
-                modifierNumber = 0f;
+                totalModifier = 0f;
                 Logger.LogLine($"modifierNumber was < 0");
             }
-            __result = modifierNumber;
-            Logger.LogLine($"moraleAttackModifier {moraleAttackModifier}, ChangeAmount {ModifiersMod.settings.ChangeAmount}");
-            Logger.LogLine($"Calculation is {rangeModifier} + {coverModifier} + {selfSpeedModifier} + {selfSprintedModifier} + {selfArmMountedModifier} + " +
-                $" {stoodUpModifier} + {heightModifier} + { heatModifier} + { targetTerrainModifier} + { selfTerrainModifier } +" +
-                $" { targetSpeedModifier } + { selfDamageModifier} + { targetSizeModifier} + { targetShutdownModifier} + { targetProneModifier} +" +
-                $" { weaponAccuracyModifier } + { attackerAccuracyModifier} + { enemyEffectModifier} + { refireModifier } + { targetDirectFireModifier} + { indirectModifier } +" +
-                $" { moraleAttackModifier} = {__result}");
+            __instance.
+            __result = totalModifier;
+            //Logger.LogLine($"moraleAttackerAttackModifier {moraleAttackerAttackModifier}, ChangeAmount {ModifiersMod.settings.ChangeAmount}, final result: {__result}");
+            //Logger.LogLine($"Calculation is {rangeModifier} + {coverModifier} + {selfSpeedModifier} + {selfSprintedModifier} + {selfArmMountedModifier} + " +
+            //  $" {stoodUpModifier} + {heightModifier} + { heatModifier} + { targetTerrainModifier} + { selfTerrainModifier } +" +
+            //  $" { targetSpeedModifier } + { selfDamageModifier} + { targetSizeModifier} + { targetShutdownModifier} + { targetProneModifier} +" +
+            //  $" { weaponAccuracyModifier } + { attackerAccuracyModifier} + { enemyEffectModifier} + { refireModifier } + { targetDirectFireModifier} + { indirectModifier } +" +
+            //  $" { moraleAttackerAttackModifier} = {__result}");*/
+
+            #endregion
         }
     }
 }

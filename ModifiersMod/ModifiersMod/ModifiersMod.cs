@@ -7,7 +7,7 @@ namespace ModifiersMod
 {
     public class Settings
     {
-        // ChangeAmount is a factor and negative values equate to better shot chance
+        // ChangeAmount is added or subtracted from the modifiers total, with negative being better shot chance
         public float ChangeAmount;
     }
 
@@ -23,12 +23,12 @@ namespace ModifiersMod
             try
             {
                 settings = JsonConvert.DeserializeObject<Settings>(settingsJson);
-                //Logger.LogLine($"Deserialized {settings}");
+                Logger.LogLine($"Deserialized {settings}");
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 settings = new Settings();
-                //Logger.LogError(e);
+                Logger.LogError(e);
             }
         }
     }

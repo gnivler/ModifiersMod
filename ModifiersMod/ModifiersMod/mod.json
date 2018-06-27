@@ -6,6 +6,6 @@
     "DLL": "ModifiersMod.dll",
 
     "Settings": {
-        "ChangeAmount": "1f"
+        "ChangeAmount": 0
     }
 }
