@@ -19,19 +19,8 @@ namespace ModifiersMod
             var _this = Traverse.Create(__instance);
             var HUD = _this.Field("HUD").GetValue<CombatHUD>();
             var combat = _this.Field("Combat").GetValue<CombatGameState>();
-  
             bool flag = HUD.SelectionHandler.ActiveState.SelectionType == SelectionType.FireMorale;
-
-
-            var combatState = new CombatGameState();
-            var toHit = new ToHit(combatState);
-            
-            // calling the vanilla method which is already patched here?!
-            //float modifier = toHit.GetMoraleAttackModifier(target, flag);
-
             var attackModifier = combat.ToHit.GetMoraleAttackModifier(target, flag);
-
-            //this.AddToolTipDetail(this.Combat.Constants.CombatUIConstants.MoraleAttackDescription.Name, this.modifier);
 
             _this.Method("AddToolTipDetail", combat.Constants.CombatUIConstants.MoraleAttackDescription.Name, attackModifier);
         }
