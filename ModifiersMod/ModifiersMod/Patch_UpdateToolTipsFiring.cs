@@ -12,20 +12,28 @@ namespace ModifiersMod
     [HarmonyPatch(typeof(CombatHUDWeaponSlot), "UpdateToolTipsFiring")]
     public static class Patch_EnableOffensivePushModifier
     {
-        private static void Postfix(CombatHUDWeaponSlot __instance, ICombatant target)
+
+        public static void Postfix(CombatHUDWeaponSlot __instance, ICombatant target)
         {
-            var HUD = Traverse.Create(__instance).Field("HUD").GetValue<CombatHUD>();
+            // THANK YOU JO!
+            var _this = Traverse.Create(__instance);
+            var HUD = _this.Field("HUD").GetValue<CombatHUD>();
+            var combat = _this.Field("Combat").GetValue<CombatGameState>();
+  
             bool flag = HUD.SelectionHandler.ActiveState.SelectionType == SelectionType.FireMorale;
-            
+
+
             var combatState = new CombatGameState();
             var toHit = new ToHit(combatState);
             
             // calling the vanilla method which is already patched here?!
-            float modifier = toHit.GetMoraleAttackModifier(target, flag);
+            //float modifier = toHit.GetMoraleAttackModifier(target, flag);
+
+            var attackModifier = combat.ToHit.GetMoraleAttackModifier(target, flag);
 
             //this.AddToolTipDetail(this.Combat.Constants.CombatUIConstants.MoraleAttackDescription.Name, this.modifier);
 
-            __instance.AddToolTipDetail(__instance.Combat.Constants.CombatUIConstants.MoraleAttackDescription.Name, modifier);
+            _this.Method("AddToolTipDetail", combat.Constants.CombatUIConstants.MoraleAttackDescription.Name, attackModifier);
         }
     }
 }

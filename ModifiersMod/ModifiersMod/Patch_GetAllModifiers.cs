@@ -53,7 +53,7 @@ namespace ModifiersMod
                 totalModifier = 0f;
                 Logger.LogLine($"modifierNumber was < 0");
             }
-            __instance.
+            
             __result = totalModifier;
             //Logger.LogLine($"moraleAttackerAttackModifier {moraleAttackerAttackModifier}, ChangeAmount {ModifiersMod.settings.ChangeAmount}, final result: {__result}");
             //Logger.LogLine($"Calculation is {rangeModifier} + {coverModifier} + {selfSpeedModifier} + {selfSprintedModifier} + {selfArmMountedModifier} + " +
