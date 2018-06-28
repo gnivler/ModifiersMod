@@ -15,14 +15,15 @@ namespace ModifiersMod
         public static void Postfix(CombatHUDWeaponSlot __instance, ICombatant target)
         {
             // THANK YOU JO!
-            var _this = Traverse.Create(__instance);
-            var HUD = _this.Field("HUD").GetValue<CombatHUD>();
-            var combat = _this.Field("Combat").GetValue<CombatGameState>();
+            var instance = Traverse.Create(__instance);
+            var HUD = instance.Field("HUD").GetValue<CombatHUD>();
+            var combat = instance.Field("Combat").GetValue<CombatGameState>();
 
             bool flag = HUD.SelectionHandler.ActiveState.SelectionType == SelectionType.FireMorale;
             var attackModifier = combat.ToHit.GetMoraleAttackModifier(target, flag);
 
-            _this.Method("AddToolTipDetail", "OurValue", attackModifier);
+            attackModifier =  Patch_AddToolTipDetail.Postfix(instance.GetValue<CombatHUDWeaponSlot>(), "Our Value", attackModifier);
+            //instance.Method("AddToolTipDetail", "OurValue", attackModifier);
             Logger.LogLine($"in UpdateToolTipsFiring.Postfix, attackModifier == {attackModifier}");
         }
     }

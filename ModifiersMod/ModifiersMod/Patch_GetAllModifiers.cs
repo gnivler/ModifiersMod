@@ -4,8 +4,6 @@ using UnityEngine;
 
 namespace ModifiersMod
 {
-
-    #region deprecated
     [HarmonyPatch(typeof(ToHit), "GetAllModifiers")]
     public static class Patch_GetAllModifiers
     {
@@ -53,15 +51,16 @@ namespace ModifiersMod
                 totalModifier = 0f;
                 Logger.LogLine($"modifierNumber was < 0");
             }
-            
+
             __result = totalModifier;
+            #region logging
+
             //Logger.LogLine($"moraleAttackerAttackModifier {moraleAttackerAttackModifier}, ChangeAmount {ModifiersMod.settings.ChangeAmount}, final result: {__result}");
             //Logger.LogLine($"Calculation is {rangeModifier} + {coverModifier} + {selfSpeedModifier} + {selfSprintedModifier} + {selfArmMountedModifier} + " +
             //  $" {stoodUpModifier} + {heightModifier} + { heatModifier} + { targetTerrainModifier} + { selfTerrainModifier } +" +
             //  $" { targetSpeedModifier } + { selfDamageModifier} + { targetSizeModifier} + { targetShutdownModifier} + { targetProneModifier} +" +
             //  $" { weaponAccuracyModifier } + { attackerAccuracyModifier} + { enemyEffectModifier} + { refireModifier } + { targetDirectFireModifier} + { indirectModifier } +" +
             //  $" { moraleAttackerAttackModifier} = {__result}");*/
-
             #endregion
         }
     }
