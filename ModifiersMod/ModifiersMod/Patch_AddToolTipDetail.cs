@@ -25,17 +25,17 @@ namespace ModifiersMod
             
             if (modifier < 0)
             {
-                Logger.LogLine($"{modifier} < 0");
+                //Logger.LogLine($"{modifier} < 0");
                 hoverElement.BuffStrings.Add(string.Format("{0} {1:+0;-#}", description, modifier));
             }
             else if (modifier > 0)
             {
-                Logger.LogLine($"{modifier} > 0");
+                //Logger.LogLine($"{modifier} > 0");
                 hoverElement.DebuffStrings.Add(string.Format("{0} {1:+0;-#}", description, modifier));
             }
             else if (modifier == 0)
             {
-                Logger.LogLine($"{modifier} == 0");
+                //Logger.LogLine($"{modifier} == 0");
             }
         }
     }

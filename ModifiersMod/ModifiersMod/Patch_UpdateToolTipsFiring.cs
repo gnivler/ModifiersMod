@@ -22,8 +22,8 @@ namespace ModifiersMod
             bool flag = HUD.SelectionHandler.ActiveState.SelectionType == SelectionType.FireMorale;
             var attackModifier = combat.ToHit.GetMoraleAttackModifier(target, flag);
 
-            attackModifier =  Patch_AddToolTipDetail.Postfix(instance.GetValue<CombatHUDWeaponSlot>(), "Our Value", attackModifier);
-            //instance.Method("AddToolTipDetail", "OurValue", attackModifier);
+            //attackModifier =  Patch_AddToolTipDetail.Postfix(instance.GetValue<CombatHUDWeaponSlot>(), "Our Value", attackModifier);
+            instance.Method("AddToolTipDetail", "OurValue", attackModifier);
             Logger.LogLine($"in UpdateToolTipsFiring.Postfix, attackModifier == {attackModifier}");
         }
     }
