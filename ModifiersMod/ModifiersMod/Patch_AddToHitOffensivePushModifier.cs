@@ -23,7 +23,7 @@ namespace ModifiersMod
 
             if (isMoraleAttack)
             {
-                Logger.Debug($"Constants.ToHit.ToHitOffensivePush == {offensivePushModifier}, settings.ChangeAmount == {ModifiersMod.settings.ChangeAmount}");
+                //Logger.Debug($"Constants.ToHit.ToHitOffensivePush == {offensivePushModifier}, settings.ChangeAmount == {ModifiersMod.settings.ChangeAmount}");
                 Logger.Debug($"Offensive Push modifier should be {modifiedToHitModifier}");
             }
             else

@@ -13,7 +13,9 @@ namespace ModifiersMod
             return false;
         }
 
-        static void Postfix(ToHit __instance, AbstractActor attacker, Weapon weapon, ICombatant target, Vector3 attackPosition, Vector3 targetPosition, LineOfFireLevel lofLevel, bool isCalledShot, ref float __result)
+        static void Postfix(ToHit __instance, AbstractActor attacker, Weapon weapon, ICombatant target,
+                            Vector3 attackPosition, Vector3 targetPosition, LineOfFireLevel lofLevel, bool isCalledShot,
+                            ref float __result)
         {
             #region copied code
             bool flag = lofLevel < LineOfFireLevel.LOFObstructed && weapon.IndirectFireCapable;
@@ -40,17 +42,15 @@ namespace ModifiersMod
             float indirectModifier = __instance.GetIndirectModifier(attacker, flag);
             #endregion
 
-            float moraleAttackModifier = Traverse.Create(__instance)
-                                        .Method("GetMoraleAttackModifier", new Type[] { typeof(ICombatant), typeof(bool) }, 
-                                                                           new object[] { attacker, isCalledShot })
-                                                                           .GetValue<float>();
+            float moraleAttackModifier =  __instance.GetMoraleAttackModifier(attacker, isCalledShot) + ModifiersMod.settings.ChangeAmount;
 
-            //float moraleAttackModifier =  instance.GetMoraleAttackModifier(attacker, isCalledShot);
-
-            float totalModifier = rangeModifier + coverModifier + selfSpeedModifier + selfSprintedModifier + selfArmMountedModifier + stoodUpModifier + heightModifier +
-                        heatModifier + targetTerrainModifier + selfTerrainModifier + targetSpeedModifier + selfDamageModifier + targetSizeModifier + targetShutdownModifier +
-                        targetProneModifier + weaponAccuracyModifier + attackerAccuracyModifier + enemyEffectModifier + refireModifier + targetDirectFireModifier + indirectModifier +
-                        moraleAttackModifier;
+            float totalModifier = rangeModifier + coverModifier + selfSpeedModifier + selfSprintedModifier +
+                                  selfArmMountedModifier + stoodUpModifier + heightModifier +
+                                  heatModifier + targetTerrainModifier + selfTerrainModifier + targetSpeedModifier +
+                                  selfDamageModifier + targetSizeModifier + targetShutdownModifier +
+                                  targetProneModifier + weaponAccuracyModifier + attackerAccuracyModifier +
+                                  enemyEffectModifier + refireModifier + targetDirectFireModifier + indirectModifier +
+                                  moraleAttackModifier;
 
             CombatGameState combat = Traverse.Create(__instance).Property("combat").GetValue<CombatGameState>();
             if (totalModifier < 0f && !combat.Constants.ResolutionConstants.AllowTotalNegativeModifier)
@@ -59,6 +59,7 @@ namespace ModifiersMod
                 Logger.Debug($"modifierNumber was < 0");
             }
 
+            Logger.Debug($"moraleAttackModifier {moraleAttackModifier}, totalModifier {totalModifier}");
             __result = totalModifier;
             #region logging
 

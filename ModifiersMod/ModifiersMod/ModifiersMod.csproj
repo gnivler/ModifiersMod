@@ -59,7 +59,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="ModifiersMod.cs" />
     <Compile Include="Patch_AddToHitOffensivePushModifier.cs" />
