@@ -24,14 +24,5 @@ namespace ModifiersMod
                 writer.WriteLine($"{DateTime.Now.ToShortTimeString()} {line}");
             }
         }
-
-        public static void Debug(object line)
-        {
-            if (!ModifiersMod.settings.Debug) return;
-            using (StreamWriter writer = new StreamWriter(filePath, true))
-            {
-                writer.WriteLine($"{DateTime.Now.ToShortTimeString()} {line}");
-            }
-        }
     }
 }

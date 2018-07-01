@@ -1,5 +1,6 @@
 ﻿using BattleTech;
 using Harmony;
+using System;
 using UnityEngine;
 
 namespace ModifiersMod
@@ -38,7 +39,13 @@ namespace ModifiersMod
             float targetDirectFireModifier = __instance.GetTargetDirectFireModifier(target, flag);
             float indirectModifier = __instance.GetIndirectModifier(attacker, flag);
             #endregion
-            float moraleAttackModifier = __instance.GetMoraleAttackModifier(attacker, isCalledShot);
+
+            float moraleAttackModifier = Traverse.Create(__instance)
+                                        .Method("GetMoraleAttackModifier", new Type[] { typeof(ICombatant), typeof(bool) }, 
+                                                                           new object[] { attacker, isCalledShot })
+                                                                           .GetValue<float>();
+
+            //float moraleAttackModifier =  instance.GetMoraleAttackModifier(attacker, isCalledShot);
 
             float totalModifier = rangeModifier + coverModifier + selfSpeedModifier + selfSprintedModifier + selfArmMountedModifier + stoodUpModifier + heightModifier +
                         heatModifier + targetTerrainModifier + selfTerrainModifier + targetSpeedModifier + selfDamageModifier + targetSizeModifier + targetShutdownModifier +
@@ -49,7 +56,7 @@ namespace ModifiersMod
             if (totalModifier < 0f && !combat.Constants.ResolutionConstants.AllowTotalNegativeModifier)
             {
                 totalModifier = 0f;
-                Logger.LogLine($"modifierNumber was < 0");
+                Logger.Debug($"modifierNumber was < 0");
             }
 
             __result = totalModifier;

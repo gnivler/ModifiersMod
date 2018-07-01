@@ -9,6 +9,7 @@ namespace ModifiersMod
     {
         // ChangeAmount is added or subtracted from the modifiers total, with negative being better shot chance
         public float ChangeAmount;
+        public bool Debug = false;
     }
 
     public static class ModifiersMod
@@ -23,7 +24,7 @@ namespace ModifiersMod
             try
             {
                 settings = JsonConvert.DeserializeObject<Settings>(settingsJson);
-                Logger.LogLine($"Deserialized {settings}");
+                Logger.Debug($"Deserialized {settings}");
             }
             catch (Exception e)
             {

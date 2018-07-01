@@ -15,21 +15,20 @@ namespace ModifiersMod
 
             offensivePushModifier = combat.Constants.ToHit.ToHitOffensivePush;
             float modifiedToHitModifier = offensivePushModifier + ModifiersMod.settings.ChangeAmount;
-
-
-            var calculatedModifier = offensivePushModifier + target.StatCollection.GetValue<float>("ToHitOffensivePushModifier");
-            __result = (!isMoraleAttack) ? 0f : offensivePushModifier + target.StatCollection.GetValue<float>("ToHitOffensivePushModifier");
+            __result = modifiedToHitModifier;
+            
+            // not used yet this is a new thing on StatCollection
+            //float calculatedModifier = offensivePushModifier + target.StatCollection.GetValue<float>("ToHitOffensivePushModifier");  /// 
+            //__result = (!isMoraleAttack) ? 0f : offensivePushModifier + target.StatCollection.GetValue<float>("ToHitOffensivePushModifier");
 
             if (isMoraleAttack)
             {
-
-                Logger.LogLine($"Constants.ToHit.ToHitOffensivePush == {offensivePushModifier}, settings.ChangeAmount == {ModifiersMod.settings.ChangeAmount}");
-                Logger.LogLine($"Offensive Push modifier should be {modifiedToHitModifier}.{Environment.NewLine}");
+                Logger.Debug($"Constants.ToHit.ToHitOffensivePush == {offensivePushModifier}, settings.ChangeAmount == {ModifiersMod.settings.ChangeAmount}");
+                Logger.Debug($"Offensive Push modifier should be {modifiedToHitModifier}");
             }
             else
             {
-                Logger.LogLine($"Not a called shot.{Environment.NewLine}");
-
+                //Logger.Debug($"Not a called shot.");
             }
         }
     }

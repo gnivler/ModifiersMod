@@ -17,25 +17,24 @@ namespace ModifiersMod
 
         public static void Postfix(CombatHUDWeaponSlot __instance, string description, int modifier)
         {
-            Logger.LogLine($"in AddToolTipDetail.Postfix, description == {description}, modifier == {modifier}");
+            //Logger.Debug($"in AddToolTipDetail.Postfix, description == {description}, modifier == {modifier}");
 
             var instance = Traverse.Create(__instance);
-
             var hoverElement = instance.Field("ToolTipHoverElement").GetValue<CombatHUDTooltipHoverElement>();
             
             if (modifier < 0)
             {
-                //Logger.LogLine($"{modifier} < 0");
+                //Logger.Debug($"{modifier} < 0");
                 hoverElement.BuffStrings.Add(string.Format("{0} {1:+0;-#}", description, modifier));
             }
             else if (modifier > 0)
             {
-                //Logger.LogLine($"{modifier} > 0");
+                //Logger.Debug($"{modifier} > 0");
                 hoverElement.DebuffStrings.Add(string.Format("{0} {1:+0;-#}", description, modifier));
             }
             else if (modifier == 0)
             {
-                //Logger.LogLine($"{modifier} == 0");
+                //Logger.Debug($"{modifier} == 0");
             }
         }
     }

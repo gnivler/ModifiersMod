@@ -23,8 +23,8 @@ namespace ModifiersMod
             var attackModifier = combat.ToHit.GetMoraleAttackModifier(target, flag);
 
             //attackModifier =  Patch_AddToolTipDetail.Postfix(instance.GetValue<CombatHUDWeaponSlot>(), "Our Value", attackModifier);
-            instance.Method("AddToolTipDetail", "OurValue", attackModifier);
-            Logger.LogLine($"in UpdateToolTipsFiring.Postfix, attackModifier == {attackModifier}");
+            instance.Method("AddToolTipDetail", new Type[] { typeof(string), typeof(int) }, new object[2] { "OurValue", attackModifier});
+            //Logger.Debug($"in UpdateToolTipsFiring.Postfix, attackModifier == {attackModifier}");
         }
     }
 }
