@@ -7,7 +7,12 @@ namespace ModifiersMod
     [HarmonyPatch(typeof(CombatHUDWeaponSlot), "AddToolTipDetail")]
     public static class Patch_AddToolTipDetail
     {
-        public static void Prefix(CombatHUDWeaponSlot __instance, string description, int modifier)
+        public static bool Prefix()
+        {
+            return false;
+        }
+
+        public static void Postfix(CombatHUDWeaponSlot __instance, string description, int modifier)
         {
             if (modifier != 0)
             {
@@ -22,29 +27,26 @@ namespace ModifiersMod
                 var currentToolTipHoverElement = Traverse.Create(__instance).Field("ToolTipHoverElement")
                                                  .GetValue<CombatHUDTooltipHoverElement>();
 
+                var buffs = currentToolTipHoverElement.BuffStrings;
+                var debuffs = currentToolTipHoverElement.DebuffStrings;
+                var effectString = string.Format("{0} {1:+0;-#}", description, modifier);
+
                 if (modifier < 0)
                 {
-                    Logger.Debug($"BuffStrings.Add {description} {modifier}");
-                    currentToolTipHoverElement.BuffStrings.Add(string.Format("{0} {1:+0;-#}", description, modifier));
+                    Logger.Debug($"BuffStrings.Add {effectString}");
+                    buffs.Add(effectString);
                 }
                 else if (modifier > 0)
                 {
-                    Logger.Debug($"DebuffStrings.Add {description} {modifier}");
-                    currentToolTipHoverElement.DebuffStrings.Add(string.Format("{0} {1:+0;-#}", description, modifier));
+                    Logger.Debug($"DebuffStrings.Add {effectString}");
+                    debuffs.Add(effectString);
                 }
 
-                if (__instance != null)
-                {
-                    Logger.Debug("----- Buff Strings     -----");
-                    currentToolTipHoverElement.BuffStrings.ForEach(x => Logger.Debug(x));
+                Logger.Debug("----- Buff Strings     -----");
+                buffs.ForEach(x => Logger.Debug(x));
 
-                    Logger.Debug("----- Debuff Strings   -----");
-                    currentToolTipHoverElement.DebuffStrings.ForEach(x => Logger.Debug(x));
-                }
-                else
-                {
-                    Logger.Debug("null again");
-                }
+                Logger.Debug("----- Debuff Strings   -----");
+                debuffs.ForEach(x => Logger.Debug(x));
             }
         }
     }
