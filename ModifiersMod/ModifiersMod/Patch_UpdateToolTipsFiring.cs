@@ -17,8 +17,8 @@ namespace ModifiersMod
                                    ref CombatHUDTooltipHoverElement ___ToolTipHoverElement)
         {
             Logger.Debug($"----- UpdateToolTipsFiring -----");
-            Logger.Debug($"Setting flag");
-            bool flag = ___HUD.SelectionHandler.ActiveState.SelectionType == SelectionType.FireMorale;
+            bool isMoraleAttack = ___HUD.SelectionHandler.ActiveState.SelectionType == SelectionType.FireMorale;
+            Logger.Debug($"Flag set: {isMoraleAttack}");
             Logger.Debug($"Setting attackModifier");
             
             // using fields directly has an effect
@@ -28,7 +28,7 @@ namespace ModifiersMod
             var attackModifier = Traverse.Create(__instance)
                                          .Method("GetMoraleAttackModifier",
                                          new Type[] { typeof(ICombatant), typeof(bool) },
-                                         new object[] { target, flag })
+                                         new object[] { target, isMoraleAttack })
                                          .GetValue<float>();
 
             Logger.Debug($"Trying to apply modifier");
