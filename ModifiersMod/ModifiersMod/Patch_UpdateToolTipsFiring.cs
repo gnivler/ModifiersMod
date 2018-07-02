@@ -2,10 +2,6 @@
 using BattleTech.UI;
 using Harmony;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using HBS;
 
 namespace ModifiersMod
 {
@@ -17,24 +13,32 @@ namespace ModifiersMod
             return true;
         }
 
-        public static void Postfix(CombatHUDWeaponSlot __instance, ICombatant target, CombatHUD ___HUD, CombatGameState ___Combat)
+        public static void Postfix(CombatHUDWeaponSlot __instance, ICombatant target, CombatHUD ___HUD, CombatGameState ___Combat,
+                                   ref CombatHUDTooltipHoverElement ___ToolTipHoverElement)
         {
             Logger.Debug($"----- UpdateToolTipsFiring -----");
             Logger.Debug($"Setting flag");
             bool flag = ___HUD.SelectionHandler.ActiveState.SelectionType == SelectionType.FireMorale;
             Logger.Debug($"Setting attackModifier");
-            var attackModifier = ___Combat.ToHit.GetMoraleAttackModifier(target, flag);
+            //var attackModifier = ___Combat.ToHit.GetMoraleAttackModifier(target, flag);
+
+            var attackModifier = Traverse.Create(__instance)
+                                         .Method("GetMoraleAttackModifier",
+                                         new Type[] { typeof(ICombatant), typeof(bool) },
+                                         new object[] { target, flag })
+                                         .GetValue<float>();
 
             Logger.Debug($"Trying to apply modifier");
             try
             {
-                Traverse.Create(__instance).Method("AddToolTipDetail", new object[] { "Offensive Push MOD", attackModifier });
+                Traverse.Create(__instance).Method("AddToolTipDetail", new Type[] { typeof(string), typeof(int) }, new object[] { "OffPush MOD", attackModifier });
                 Logger.Debug($"Modifier applied: {attackModifier}");
             }
             catch (Exception e)
             {
                 Logger.LogError(e);
             }
+            Logger.Debug($"-----  Completed  Update   -----");
         }
     }
 }
