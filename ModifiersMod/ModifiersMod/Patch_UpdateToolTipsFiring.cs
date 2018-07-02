@@ -10,14 +10,15 @@ using HBS;
 namespace ModifiersMod
 {
     [HarmonyPatch(typeof(CombatHUDWeaponSlot), "UpdateToolTipsFiring")]
-    public static class Patch_EnableOffensivePushModifier
+    public static class Patch_UpdateToolTipsFiring
     {
-        public static void Postfix(CombatHUDWeaponSlot __instance, ICombatant target)
+        public static void Prefix(CombatHUDWeaponSlot __instance, ICombatant target, CombatHUD ___HUD, CombatGameState ___Combat,
+                                  List<string> ___BuffStrings, List<string> ___DebuffStrings)
         {
-            // THANK YOU JO!
-            var instance = Traverse.Create(__instance);
-            var fields = instance.Fields();
             Logger.Debug($"----- UpdateToolTipsFiring -----");
+
+            #region list_members
+            //var fields = instance.Fields();
             //Logger.Debug($"----- Fields -----");
             //fields.ForEach(x => Logger.Debug(x));
 
@@ -32,30 +33,27 @@ namespace ModifiersMod
             //var debuffs = __instance.ToolTipHoverElement.DebuffStrings;
             //Logger.Debug($"----- Debuffs -----");
             //debuffs.ForEach(x => Logger.Debug(x));
+            #endregion  
 
-            var HUD = instance.Field("HUD").GetValue<CombatHUD>();
-            var combat = instance.Field("Combat").GetValue<CombatGameState>();
-            bool flag = HUD.SelectionHandler.ActiveState.SelectionType == SelectionType.FireMorale;
-            var attackModifier = combat.ToHit.GetMoraleAttackModifier(target, flag);
+            Logger.Debug($"Setting flag");
+            bool flag = ___HUD.SelectionHandler.ActiveState.SelectionType == SelectionType.FireMorale;
+            Logger.Debug($"Setting attackModifier");
+            var attackModifier = ___Combat.ToHit.GetMoraleAttackModifier(target, flag);
 
-            if (instance.Method("AddToolTipDetail").MethodExists())
+            Logger.Debug($"Trying to Traverse AddToolTipDetail");
+            try
             {
-                Logger.Debug($"method exists");
-                Logger.Debug($"{instance.Field("BuffStrings").GetValue<List<string>>().ToArray()}");
-                Logger.Debug($"{instance.Field("DebuffStrings").GetValue<List<string>>().ToArray()}");
+                Traverse.Create(__instance).Method("AddToolTipDetail", new Type[] { typeof(string), typeof(int) },
+                                                    new object[2] { "Offensive Push MOD", attackModifier });
             }
-            else
+            catch (Exception e)
             {
-                Logger.Debug($"method does not exist");
+                Logger.LogError(e);
             }
-
-            //attackModifier =  Patch_AddToolTipDetail.Postfix(instance.GetValue<CombatHUDWeaponSlot>(), "Our Value", attackModifier);
-            instance.Method("AddToolTipDetail", new Type[] { typeof(string), typeof(int) }, new object[2] { "OurValue", attackModifier});
             Logger.Debug($"have tried tooltip detail with {attackModifier}");
-            Logger.Debug($"{instance.Field("BuffStrings").GetValue<List<string>>().ToArray()}");
-            Logger.Debug($"{instance.Field("DebuffStrings").GetValue<List<string>>().ToArray()}");
 
-            //Logger.Debug($"in UpdateToolTipsFiring.Postfix, attackModifier == {attackModifier}");
+            ___BuffStrings.ForEach(x => Logger.Debug(x));
+            ___DebuffStrings.ForEach(x => Logger.Debug(x));
         }
     }
 }

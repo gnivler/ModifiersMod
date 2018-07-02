@@ -8,14 +8,9 @@ namespace ModifiersMod
     [HarmonyPatch(typeof(ToHit), "GetAllModifiers")]
     public static class Patch_GetAllModifiers
     {
-        static bool Prefix()
-        {
-            return false;
-        }
-
-        static void Postfix(ToHit __instance, AbstractActor attacker, Weapon weapon, ICombatant target,
+        public static void Prefix(ToHit __instance, AbstractActor attacker, Weapon weapon, ICombatant target,
                             Vector3 attackPosition, Vector3 targetPosition, LineOfFireLevel lofLevel, bool isCalledShot,
-                            ref float __result)
+                            ref float ___moraleAttackModifier)
         {
             #region copied code
             bool flag = lofLevel < LineOfFireLevel.LOFObstructed && weapon.IndirectFireCapable;
@@ -42,7 +37,8 @@ namespace ModifiersMod
             float indirectModifier = __instance.GetIndirectModifier(attacker, flag);
             #endregion
 
-            float moraleAttackModifier =  __instance.GetMoraleAttackModifier(attacker, isCalledShot) + ModifiersMod.settings.ChangeAmount;
+            float moraleAttackModifier = Traverse.Create(__instance).Method("GetMoraleAttackModifier", new object[] { attacker, ModifiersMod.settings.ChangeAmount })
+                                                                    .GetValue<float>();
 
             float totalModifier = rangeModifier + coverModifier + selfSpeedModifier + selfSprintedModifier +
                                   selfArmMountedModifier + stoodUpModifier + heightModifier +
@@ -52,24 +48,24 @@ namespace ModifiersMod
                                   enemyEffectModifier + refireModifier + targetDirectFireModifier + indirectModifier +
                                   moraleAttackModifier;
 
-            CombatGameState combat = Traverse.Create(__instance).Property("combat").GetValue<CombatGameState>();
-            if (totalModifier < 0f && !combat.Constants.ResolutionConstants.AllowTotalNegativeModifier)
+            try
             {
-                totalModifier = 0f;
-                Logger.Debug($"modifierNumber was < 0");
+
+                CombatGameState combat = Traverse.Create(__instance).Property("combat").GetValue<CombatGameState>();
+                if (totalModifier < 0f && !combat.Constants.ResolutionConstants.AllowTotalNegativeModifier)
+                {
+                    totalModifier = 0f;
+                    Logger.Debug($"modifierNumber was < 0");
+                }
+            }
+            catch (Exception e)
+            {
+
+                Logger.LogError(e);
             }
 
             Logger.Debug($"moraleAttackModifier {moraleAttackModifier}, totalModifier {totalModifier}");
             __result = totalModifier;
-            #region logging
-
-            //Logger.LogLine($"moraleAttackerAttackModifier {moraleAttackerAttackModifier}, ChangeAmount {ModifiersMod.settings.ChangeAmount}, final result: {__result}");
-            //Logger.LogLine($"Calculation is {rangeModifier} + {coverModifier} + {selfSpeedModifier} + {selfSprintedModifier} + {selfArmMountedModifier} + " +
-            //  $" {stoodUpModifier} + {heightModifier} + { heatModifier} + { targetTerrainModifier} + { selfTerrainModifier } +" +
-            //  $" { targetSpeedModifier } + { selfDamageModifier} + { targetSizeModifier} + { targetShutdownModifier} + { targetProneModifier} +" +
-            //  $" { weaponAccuracyModifier } + { attackerAccuracyModifier} + { enemyEffectModifier} + { refireModifier } + { targetDirectFireModifier} + { indirectModifier } +" +
-            //  $" { moraleAttackerAttackModifier} = {__result}");*/
-            #endregion
         }
     }
 }
