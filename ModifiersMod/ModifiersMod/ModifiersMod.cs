@@ -1,4 +1,5 @@
-﻿using Harmony;
+﻿using BattleTech;
+using Harmony;
 using Newtonsoft.Json;
 using System;
 using System.Reflection;
@@ -7,8 +8,6 @@ namespace ModifiersMod
 {
     public class Settings
     {
-        // ChangeAmount is added or subtracted from the modifiers total, with negative being better shot chance
-        public float ChangeAmount;
         public bool Debug = false;
     }
 

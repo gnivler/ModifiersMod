@@ -61,9 +61,7 @@
   <ItemGroup>
     <Compile Include="Logger.cs" />
     <Compile Include="ModifiersMod.cs" />
-    <Compile Include="Patch_GetMoraleAttackModifier.cs" />
-    <Compile Include="Patch_AddToolTipDetail.cs" />
-    <Compile Include="Patch_UpdateToolTipsFiring.cs" />
+    <Compile Include="Patch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
