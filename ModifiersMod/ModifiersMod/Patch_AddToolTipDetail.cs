@@ -16,14 +16,14 @@ namespace ModifiersMod
         {
             if (modifier != 0)
             {
-                Logger.Debug($"----- AddToolTipDetail -----");
+                Logger.Debug($"----- Start AddToolTipDetail ---------");
                 if (__instance == null)
                 {
                     Logger.Debug($"null, wtf");
                     return;
                 }
 
-                Logger.Debug($"description: {description}, modifier: {modifier}");
+                Logger.Debug($"Call: {description}, modifier: {modifier}");
                 var currentToolTipHoverElement = Traverse.Create(__instance).Field("ToolTipHoverElement")
                                                  .GetValue<CombatHUDTooltipHoverElement>();
 
@@ -33,20 +33,27 @@ namespace ModifiersMod
 
                 if (modifier < 0)
                 {
-                    Logger.Debug($"BuffStrings.Add {effectString}");
+                    Logger.Debug($">>Buffed: {effectString}");
                     buffs.Add(effectString);
                 }
                 else if (modifier > 0)
                 {
-                    Logger.Debug($"DebuffStrings.Add {effectString}");
+                    Logger.Debug($">>Debuffed: {effectString}");
                     debuffs.Add(effectString);
                 }
 
-                Logger.Debug("----- Buff Strings     -----");
-                buffs.ForEach(x => Logger.Debug(x));
+                if (buffs.Count > 0)
+                {
+                    Logger.Debug("----- Buff Strings --------------------");
+                    buffs.ForEach(x => Logger.Debug(x));
+                }
 
-                Logger.Debug("----- Debuff Strings   -----");
-                debuffs.ForEach(x => Logger.Debug(x));
+                if (debuffs.Count > 0)
+                {
+                    Logger.Debug("----- Debuff Strings ------------------");
+                    debuffs.ForEach(x => Logger.Debug(x));
+                }
+                Logger.Debug($"----- End AddToolTipDetail ---------------{Environment.NewLine}");
             }
         }
     }

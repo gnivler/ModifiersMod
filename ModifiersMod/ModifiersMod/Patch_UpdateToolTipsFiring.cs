@@ -13,35 +13,34 @@ namespace ModifiersMod
             return true;
         }
 
-        public static void Postfix(CombatHUDWeaponSlot __instance, ICombatant target, CombatHUD ___HUD, CombatGameState ___Combat,
-                                   ref CombatHUDTooltipHoverElement ___ToolTipHoverElement)
+        public static void Postfix(CombatHUDWeaponSlot __instance, ICombatant target, CombatHUD ___HUD)
         {
-            Logger.Debug($"----- UpdateToolTipsFiring -----");
+            Logger.Debug($"----- Start UpdateToolTipsFiring -----");
             bool isMoraleAttack = ___HUD.SelectionHandler.ActiveState.SelectionType == SelectionType.FireMorale;
-            Logger.Debug($"Flag set: {isMoraleAttack}");
+            Logger.Debug($"Called shot: {isMoraleAttack}");
             Logger.Debug($"Setting attackModifier");
-            
-            // using fields directly has an effect
-            //var attackModifier = ___Combat.ToHit.GetMoraleAttackModifier(target, flag);
 
-            // anything I try here causes problems.  only one weapon lights up, the modifier doesn't apply below, pretty much breaks
-            var attackModifier = Traverse.Create(__instance)
-                                         .Method("GetMoraleAttackModifier",
-                                         new Type[] { typeof(ICombatant), typeof(bool) },
-                                         new object[] { target, isMoraleAttack })
-                                         .GetValue<float>();
+            var combat = Traverse.Create(__instance).Field("Combat").GetValue<CombatGameState>();
+            var attackModifier = combat.ToHit.GetMoraleAttackModifier(target, isMoraleAttack);
+
 
             Logger.Debug($"Trying to apply modifier");
             try
             {
                 Traverse.Create(__instance).Method("AddToolTipDetail", new Type[] { typeof(string), typeof(int) }, new object[] { "OffPush MOD", attackModifier });
                 Logger.Debug($"Modifier applied: {attackModifier}");
+
+                Logger.Debug("Buffs:");
+                __instance.ToolTipHoverElement.BuffStrings.ForEach(x => Logger.Debug(x));
+                Logger.Debug("Debuffs:");
+                __instance.ToolTipHoverElement.DebuffStrings.ForEach(x => Logger.Debug(x));
+
             }
             catch (Exception e)
             {
                 Logger.LogError(e);
             }
-            Logger.Debug($"-----  Completed  Update   -----");
+            Logger.Debug($"----- End UpdateToolTipsFiring -------{Environment.NewLine}");
         }
     }
 }
