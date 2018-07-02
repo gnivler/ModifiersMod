@@ -63,7 +63,6 @@
     <Compile Include="ModifiersMod.cs" />
     <Compile Include="Patch_GetMoraleAttackModifier.cs" />
     <Compile Include="Patch_AddToolTipDetail.cs" />
-    <Compile Include="Patch_GetAllModifiers.cs" />
     <Compile Include="Patch_UpdateToolTipsFiring.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

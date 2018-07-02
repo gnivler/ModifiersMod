@@ -9,7 +9,7 @@ namespace ModifiersMod
     {
         public static bool Prefix(bool isMoraleAttack, CombatGameState ___combat, ref float __result)
         {
-            #region cruft
+            #region later
             // not used yet this is a new thing on StatCollection (code may be totally wrong)
             //float calculatedModifier = offensivePushModifier + target.StatCollection.GetValue<float>("ToHitOffensivePushModifier");  /// 
             //__result = (!isMoraleAttack) ? 0f : offensivePushModifier + target.StatCollection.GetValue<float>("ToHitOffensivePushModifier");
@@ -25,7 +25,6 @@ namespace ModifiersMod
             else
             {
                 __result = 0f;
-                Logger.Debug($"Not a called shot.");
             }
             return false;
         }

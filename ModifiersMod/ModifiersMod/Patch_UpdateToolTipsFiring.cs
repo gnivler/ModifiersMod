@@ -15,7 +15,7 @@ namespace ModifiersMod
 
         public static void Postfix(CombatHUDWeaponSlot __instance, ICombatant target, CombatHUD ___HUD)
         {
-            Logger.Debug($"----- Start UpdateToolTipsFiring -----");
+            Logger.Debug($"----- Start UpdateToolTipsFiring ---------");
             bool isMoraleAttack = ___HUD.SelectionHandler.ActiveState.SelectionType == SelectionType.FireMorale;
             Logger.Debug($"Called shot: {isMoraleAttack}");
             Logger.Debug($"Setting attackModifier");
@@ -40,7 +40,7 @@ namespace ModifiersMod
             {
                 Logger.LogError(e);
             }
-            Logger.Debug($"----- End UpdateToolTipsFiring -------{Environment.NewLine}");
+            Logger.Debug($"----- End UpdateToolTipsFiring -----------{Environment.NewLine}");
         }
     }
 }

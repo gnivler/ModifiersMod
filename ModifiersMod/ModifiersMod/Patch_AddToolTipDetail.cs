@@ -16,7 +16,7 @@ namespace ModifiersMod
         {
             if (modifier != 0)
             {
-                Logger.Debug($"----- Start AddToolTipDetail ---------");
+                Logger.Debug($"----- Start AddToolTipDetail -------------");
                 if (__instance == null)
                 {
                     Logger.Debug($"null, wtf");
@@ -44,13 +44,13 @@ namespace ModifiersMod
 
                 if (buffs.Count > 0)
                 {
-                    Logger.Debug("----- Buff Strings --------------------");
+                    Logger.Debug("----- Buff Strings -----------------------");
                     buffs.ForEach(x => Logger.Debug(x));
                 }
 
                 if (debuffs.Count > 0)
                 {
-                    Logger.Debug("----- Debuff Strings ------------------");
+                    Logger.Debug("----- Debuff Strings ---------------------");
                     debuffs.ForEach(x => Logger.Debug(x));
                 }
                 Logger.Debug($"----- End AddToolTipDetail ---------------{Environment.NewLine}");
