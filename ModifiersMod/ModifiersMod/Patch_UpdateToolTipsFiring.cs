@@ -20,8 +20,11 @@ namespace ModifiersMod
             Logger.Debug($"Setting flag");
             bool flag = ___HUD.SelectionHandler.ActiveState.SelectionType == SelectionType.FireMorale;
             Logger.Debug($"Setting attackModifier");
+            
+            // using fields directly has an effect
             //var attackModifier = ___Combat.ToHit.GetMoraleAttackModifier(target, flag);
 
+            // anything I try here causes problems.  only one weapon lights up, the modifier doesn't apply below, pretty much breaks
             var attackModifier = Traverse.Create(__instance)
                                          .Method("GetMoraleAttackModifier",
                                          new Type[] { typeof(ICombatant), typeof(bool) },
