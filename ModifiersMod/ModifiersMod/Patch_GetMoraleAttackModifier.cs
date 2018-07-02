@@ -7,11 +7,9 @@ namespace ModifiersMod
     [HarmonyPatch(typeof(ToHit), "GetMoraleAttackModifier")]
     public static class Patch_GetMoraleAttackModifier
     {
-        public static void Prefix(ToHit __instance, ICombatant target, bool isMoraleAttack, CombatGameState ___combat, ref float __result)
+        public static void Prefix(bool isMoraleAttack, CombatGameState ___combat, ref float __result)
         {
-            //CombatGameState combat = Traverse.Create(__instance).Field("combat").GetValue<CombatGameState>();
-
-            __result = ___combat.Constants.ToHit.ToHitOffensivePush + ModifiersMod.settings.ChangeAmount;
+            __result = (!isMoraleAttack) ? 0f : ___combat.Constants.ToHit.ToHitOffensivePush + ModifiersMod.settings.ChangeAmount;
 
             // not used yet this is a new thing on StatCollection
             //float calculatedModifier = offensivePushModifier + target.StatCollection.GetValue<float>("ToHitOffensivePushModifier");  /// 

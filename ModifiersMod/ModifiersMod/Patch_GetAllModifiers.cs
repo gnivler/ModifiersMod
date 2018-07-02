@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace ModifiersMod
 {
-    [HarmonyPatch(typeof(ToHit), "GetAllModifiers")]
+    /*[HarmonyPatch(typeof(ToHit), "GetAllModifiers")]
     public static class Patch_GetAllModifiers
     {
-        public static void Prefix(ToHit __instance, AbstractActor attacker, Weapon weapon, ICombatant target,
+        public static void Postfix(ToHit __instance, AbstractActor attacker, Weapon weapon, ICombatant target,
                             Vector3 attackPosition, Vector3 targetPosition, LineOfFireLevel lofLevel, bool isCalledShot,
                             ref float ___moraleAttackModifier)
         {
@@ -67,5 +67,5 @@ namespace ModifiersMod
             Logger.Debug($"moraleAttackModifier {moraleAttackModifier}, totalModifier {totalModifier}");
             __result = totalModifier;
         }
-    }
+    }*/
 }
