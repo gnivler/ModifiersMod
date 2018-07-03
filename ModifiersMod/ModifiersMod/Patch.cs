@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using BattleTech;
 using BattleTech.UI;
 using Harmony;
@@ -11,15 +12,46 @@ namespace ModifiersMod
         [HarmonyPatch(typeof(ToHit), "GetMoraleAttackModifier")]
         public static class EnableOffensivePushModifier
         {
-            public static bool Prefix(ToHit __instance, ICombatant target, bool isMoraleAttack, ref float __result)
+            public static bool Prefix(ToHit __instance, ICombatant target, bool isMoraleAttack,
+                                      ref float __result, CombatGameState ___combat)
             {
-                float num = 0f;
-                var modifier = target.StatCollection.GetValue<float>("ToHitOffensivePushModifier");
+                // if enemy return original?  and don't log (this fires during player's turn as well
+                // and so doesn't run the method
+                //if (___combat.LocalPlayerTeam.IsLocalPlayer)
+                //{
+                //    __result = 0f;
+                //    Logger.Debug($"{(___combat.LocalPlayerTeam.IsLocalPlayer)}");
+                //    return false;
+                //}
+                Logger.Debug($"----- Start GetMoraleAttackModifier ------");
 
-                CombatGameState combat = Traverse.Create(__instance).Field("combat").GetValue<CombatGameState>();
-                num += combat.Constants.ToHit.ToHitOffensivePush;
-                __result = (!isMoraleAttack) ? 0f : num + target.StatCollection.GetValue<float>("ToHitOffensivePushModifier");
-                Logger.Debug($"Offensive Push modifier should be {combat.Constants.ToHit.ToHitOffensivePush} + {modifier}");
+                target.StatCollection.GetValue<float>("ToHitOffensivePushModifier");
+                StatCollection collection = Traverse.Create(target).Property("StatCollection").GetValue<StatCollection>();
+                float modifier = collection.GetValue<float>("ToHitOffensivePushModifier");
+                //Statistic stat = collection.GetStatistic("ToHitOffensivePushModifier");
+                //StatCollection.StatOperation operation = stat.
+
+
+                //float modifier= 0;//= ToHitOffensivePushModifier.Value<float>();
+
+                // need to get a list of effects then iterate through it to aggregate modifier
+                // from multiple sources of the effect
+                //
+                //var effectlist = Traverse.Create(___combat).Field("effects").GetValue<List<Effect>>();            
+                //foreach (var effect in effectlist)
+                //{
+                //    if (effect.EffectData.Description.Id == "StatusEffect - OP300") {
+                //        num += effect.EffectData.Description
+                //}
+                //
+                //var otherModifier = target.StatCollection.GetValue<float>("ToHitOffensivePushModifier");
+                //
+                //CombatGameState combat = Traverse.Create(__instance).Field("combat").GetValue<CombatGameState>();
+                //num += combat.Constants.ToHit.ToHitOffensivePush;                                
+                __result = (!isMoraleAttack) ? 0f : modifier;
+                Logger.Debug($"Offensive Push modifier: {modifier}");
+                Logger.Debug($"----- End GetMoraleAttackModifier --------");
+
                 return false;
             }
         }
